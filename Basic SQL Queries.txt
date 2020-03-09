@@ -1,0 +1,57 @@
+CREATE TABLE EMPLOYEES (
+                            EMP_ID CHAR(9) NOT NULL, 
+                            F_NAME VARCHAR(15) NOT NULL,
+                            L_NAME VARCHAR(15) NOT NULL,
+                            SSN CHAR(9),
+                            B_DATE DATE,
+                            SEX CHAR,
+                            ADDRESS VARCHAR(30),
+                            JOB_ID CHAR(9),
+                            SALARY DECIMAL(10,2),
+                            MANAGER_ID CHAR(9),
+                            DEP_ID CHAR(9) NOT NULL,
+                            PRIMARY KEY (EMP_ID));
+                            
+ CREATE TABLE DEPARTMENTS (
+                            DEPT_ID_DEP CHAR(9) NOT NULL, 
+                            DEP_NAME VARCHAR(15) ,
+                            MANAGER_ID CHAR(9),
+                            LOC_ID CHAR(9),
+                            PRIMARY KEY (DEPT_ID_DEP));
+                            
+                            CREATE TABLE LOCATIONS (
+                            LOCT_ID CHAR(9) NOT NULL,
+                            DEP_ID_LOC CHAR(9) NOT NULL,
+                            PRIMARY KEY (LOCT_ID,DEP_ID_LOC));
+                            
+
+-- Query 1: Retrieve employees records that correspond to departments in the department table
+SELECT * FROM EMPLOYEES
+WHERE DEP_ID IN
+(SELECT DEPT_ID_DEP FROM DEPARTMENTS);
+
+-- Query 2: Retrieve a list of employees from a specific location
+SELECT F_NAME, L_NAME FROM EMPLOYEES
+WHERE DEP_ID IN
+(SELECT DEP_ID_LOC FROM LOCATIONS );
+
+-- Query 3: Retrieve the department ID and name for employees who earn more than $70,000
+SELECT DEPT_ID_DEP, DEP_NAME FROM DEPARTMENTS
+WHERE DEPT_ID_DEP IN
+(SELECT DEP_ID FROM EMPLOYEES
+WHERE SALARY > 70000);
+
+-- Query 4:
+SELECT * FROM EMPLOYEES E, DEPARTMENTS D
+WHERE E.DEP_ID = D.DEPT_ID_DEP;
+
+
+-- Query 5: Retrieve the department name for each employee
+SELECT F_NAME, DEP_NAME
+FROM EMPLOYEES E, DEPARTMENTS D
+WHERE E.DEP_ID = D.DEPT_ID_DEP;
+
+
+
+
+
